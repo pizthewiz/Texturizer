@@ -21,7 +21,5 @@ DerivedData
 
 build/
 
-node_modules
+assets/out.DDS
 
-# ignore auto-generated build versioning config
-/Configurations/BuildVersion.xcconfig
