@@ -30,14 +30,21 @@ private:
 };
 
 void TexturizerApp::setup() {
+    if (!gl::isExtensionAvailable("GL_EXT_texture_compression_s3tc")) {
+        console() << "GPU does not support GL_EXT_texture_compression_s3tc" << endl;
+        quit();
+    }
+
     // 8-bit image
     mSurface = Surface::create(loadImage(loadAsset("uvtemplate.png")));
     if (!mSurface) {
+        console() << "unable to create surface" << endl;
         quit();
     }
 
     if (!mSurface->hasAlpha()) {
         // TODO: add an empty alpha channel
+        console() << "image must have an alpha channel" << endl;
         quit();
     }
 
