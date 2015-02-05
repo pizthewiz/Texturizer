@@ -190,7 +190,7 @@ void TexturizerApp::setup() {
     buffer.write(DataTargetPath::createRef(ddsFilePath));
 
     try {
-        mTexture = gl::Texture::createFromDds(DataSourcePath::create(ddsFilePath));
+        mTexture = gl::Texture::createFromDds(DataSourceBuffer::create(buffer));
     } catch (...) {
         console() << "failed to create texture from DDS file" << endl;
         quit();
