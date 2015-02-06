@@ -21,11 +21,13 @@ using namespace std;
 class TexturizerApp : public AppNative {
 public:
     void setup() override;
+    void quit() override;
     void update() override;
     void draw() override;
 
 private:
-    SurfaceRef mSurface;
+    Surface8uRef mSourceSurface;
+    Surface8uRef mIntermediateSurface;
     gl::TextureRef mTexture;
 };
 
@@ -35,28 +37,44 @@ void TexturizerApp::setup() {
         quit();
     }
 
-    // 8-bit image
-    mSurface = Surface::create(loadImage(loadAsset("uvtemplate.png")));
-    if (!mSurface) {
+    try {
+        mSourceSurface = Surface::create(loadImage(loadAsset("uvtemplate.bmp")));
+    } catch (...) {
         console() << "unable to create surface" << endl;
         quit();
     }
 
-    if (!mSurface->hasAlpha()) {
-        // TODO: add an empty alpha channel
-        console() << "image must have an alpha channel" << endl;
-        quit();
+    // create RGBA intermediate when necessary
+    if (mSourceSurface->getChannelOrder().getCode() != SurfaceChannelOrder::RGBA) {
+        int32_t width = mSourceSurface->getWidth();
+        int32_t height = mSourceSurface->getHeight();
+        size_t size = width * height * 4;
+        unsigned char* intermediate = (unsigned char*)malloc(size);
+        size_t offset = 0;
+
+        Surface::Iter iter = mSourceSurface->getIter();
+        while(iter.line()) {
+            while(iter.pixel()) {
+                intermediate[offset++] = iter.r();
+                intermediate[offset++] = iter.g();
+                intermediate[offset++] = iter.b();
+                intermediate[offset++] = mSourceSurface->hasAlpha() ? iter.a() : 255;
+           }
+        }
+
+        try {
+            mIntermediateSurface = Surface::create(intermediate, width, height, 4, SurfaceChannelOrder::RGBA);
+        } catch (...) {
+            console() << "failed to create intermediate RGBA surface" << endl;
+            quit();
+        }
     }
 
-    // NB: not entirely sure if this actually reorders the channels or just relabels them
-    if (mSurface->getChannelOrder().getCode() != SurfaceChannelOrder::RGBA) {
-        mSurface->setChannelOrder(SurfaceChannelOrder::RGBA);
-    }
-
-    unsigned char* source = mSurface->getData();
-    int32_t width = mSurface->getWidth();
-    int32_t height = mSurface->getHeight();
-    size_t dataSize = mSurface->getPixelBytes() * width * height;
+    Surface8uRef s = mIntermediateSurface ? mIntermediateSurface : mSourceSurface;
+    unsigned char* source = s->getData();
+    int32_t width = s->getWidth();
+    int32_t height = s->getHeight();
+    size_t dataSize = s->getPixelBytes() * width * height;
 #if defined(DXT1)
     dataSize /= 8;
     int compressionFormat = 0;
@@ -201,6 +219,13 @@ void TexturizerApp::setup() {
     } catch (...) {
         console() << "failed to create texture from DDS file" << endl;
         quit();
+    }
+}
+
+void TexturizerApp::quit() {
+    // NB: doesn't actually seem to be called
+    if (mIntermediateSurface) {
+        free(mIntermediateSurface->getData());
     }
 }
 
