@@ -190,24 +190,42 @@ void TexturizerApp::setup() {
     enum { FOURCC_DXT1 = 0x31545844, FOURCC_DXT3 = 0x33545844, FOURCC_DXT5 = 0x35545844, FOURCC_DX10 = 0x30315844,
         FOURCC_ATI1 = 0x31495441, FOURCC_ATI2= 0x32495441, DDPF_FOURCC = 0x4 };
 
-    DdSurface* ddsd = (DdSurface*)calloc(4, sizeof(DdSurface));
-    ddsd->dwWidth = width;
-    ddsd->dwHeight = height;
+    // lifted from SOIL2 image_DXT.h
+    /*	The dwFlags member of the original DDSURFACEDESC2 structure
+     can be set to one or more of the following values.	*/
+#define DDSD_CAPS	0x00000001
+#define DDSD_HEIGHT	0x00000002
+#define DDSD_WIDTH	0x00000004
+#define DDSD_PITCH	0x00000008
+#define DDSD_PIXELFORMAT	0x00001000
+#define DDSD_MIPMAPCOUNT	0x00020000
+#define DDSD_LINEARSIZE	0x00080000
+#define DDSD_DEPTH	0x00800000
 
-    ddsd->ddpfPixelFormat.dwFlags = DDPF_FOURCC;
+    /*	The dwCaps1 member of the DDSCAPS2 structure can be
+     set to one or more of the following values.	*/
+#define DDSCAPS_COMPLEX	0x00000008
+#define DDSCAPS_TEXTURE	0x00001000
+#define DDSCAPS_MIPMAP	0x00400000
+
+    DdSurface* header = (DdSurface*)calloc(4, sizeof(DdSurface));
+    header->dwSize = 124;
+    header->dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT | DDSD_LINEARSIZE;
+    header->dwHeight = height;
+    header->dwWidth = width;
+    header->dwLinearSize = dataSize;
+    header->ddpfPixelFormat.dwSize = 32;
+    header->ddpfPixelFormat.dwFlags = DDPF_FOURCC;
 #if defined(DXT1)
-    ddsd->ddpfPixelFormat.dwFourCC = FOURCC_DXT1;
+    header->ddpfPixelFormat.dwFourCC = FOURCC_DXT1;
 #else
-    ddsd->ddpfPixelFormat.dwFourCC = FOURCC_DXT5;
+    header->ddpfPixelFormat.dwFourCC = FOURCC_DXT5;
 #endif
-//    ddsd->ddpfPixelFormat.dwRGBBitCount =
-
-//    ddsd->dwLinearSize = 
-//    ddsd->dwMipMapCount =
+    header->ddsCaps.dwCaps1 = DDSCAPS_TEXTURE;
 
     Buffer buffer(128 + dataSize);
     memcpy((unsigned char*)buffer.getData() + 0, &"DDS ", 4);
-    memcpy((unsigned char*)buffer.getData() + 4, ddsd, 124);
+    memcpy((unsigned char*)buffer.getData() + 4, header, 124);
     memcpy((unsigned char*)buffer.getData() + 128, destination, dataSize);
     free(destination);
 
