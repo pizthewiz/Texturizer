@@ -19,7 +19,7 @@
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		6C9C84B34B2C41559FCDE6FC /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4A5122B3BFB44A9F949C9575 /* CinderApp.icns */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		D8EB0A431A8137BC0037456A /* stb_dxt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8EB0A401A8137BC0037456A /* stb_dxt.cpp */; };
+		D898815F1A874E94005E3CD1 /* image_DXT.c in Sources */ = {isa = PBXBuildFile; fileRef = D898815D1A874E94005E3CD1 /* image_DXT.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,9 +39,8 @@
 		7DABD99130644E65B98765E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Texturizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Texturizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A77EE11D2E9B4666AF6D4CC8 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
-		D8EB0A3F1A8137BC0037456A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		D8EB0A401A8137BC0037456A /* stb_dxt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stb_dxt.cpp; sourceTree = "<group>"; };
-		D8EB0A411A8137BC0037456A /* stb_dxt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_dxt.h; sourceTree = "<group>"; };
+		D898815D1A874E94005E3CD1 /* image_DXT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = image_DXT.c; path = ../Vendor/soil2/src/SOIL2/image_DXT.c; sourceTree = "<group>"; };
+		D898815E1A874E94005E3CD1 /* image_DXT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = image_DXT.h; path = ../Vendor/soil2/src/SOIL2/image_DXT.h; sourceTree = "<group>"; };
 		E0E87CB886B8451F89E8A749 /* Texturizer_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = Texturizer_Prefix.pch; sourceTree = "<group>"; };
 		F99A3CC61ED0455BAEFC5E39 /* TexturizerApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = TexturizerApp.cpp; path = ../src/TexturizerApp.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -157,23 +156,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D89881601A874E9B005E3CD1 /* SOIL2 */ = {
+			isa = PBXGroup;
+			children = (
+				D898815E1A874E94005E3CD1 /* image_DXT.h */,
+				D898815D1A874E94005E3CD1 /* image_DXT.c */,
+			);
+			name = SOIL2;
+			sourceTree = "<group>";
+		};
 		D8EB0A3D1A8137AF0037456A /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				D8EB0A3E1A8137BC0037456A /* RygsDXTc */,
+				D89881601A874E9B005E3CD1 /* SOIL2 */,
 			);
 			name = Vendor;
-			sourceTree = "<group>";
-		};
-		D8EB0A3E1A8137BC0037456A /* RygsDXTc */ = {
-			isa = PBXGroup;
-			children = (
-				D8EB0A3F1A8137BC0037456A /* README.md */,
-				D8EB0A411A8137BC0037456A /* stb_dxt.h */,
-				D8EB0A401A8137BC0037456A /* stb_dxt.cpp */,
-			);
-			name = RygsDXTc;
-			path = ../Vendor/RygsDXTc;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,8 +237,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D898815F1A874E94005E3CD1 /* image_DXT.c in Sources */,
 				19AE3DF998064CDBB630982C /* TexturizerApp.cpp in Sources */,
-				D8EB0A431A8137BC0037456A /* stb_dxt.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
