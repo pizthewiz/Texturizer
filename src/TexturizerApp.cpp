@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Chorded Constructions. All rights reserved.
 //
 
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/Texture.h"
 
@@ -18,7 +18,7 @@ using namespace std;
 
 #define DXT1 1
 
-class TexturizerApp : public AppNative {
+class TexturizerApp : public App {
 public:
     void setup() override;
     void quit() override;
@@ -260,4 +260,4 @@ void TexturizerApp::draw() {
     gl::draw(mTexture);
 }
 
-CINDER_APP_NATIVE(TexturizerApp, RendererGl)
+CINDER_APP(TexturizerApp, RendererGl)
