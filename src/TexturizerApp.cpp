@@ -45,6 +45,8 @@ void TexturizerApp::setup() {
         quit();
     }
 
+    // NB - Much easier via Cinder-DDS: https://github.com/pizthewiz/Cinder-DDS
+
     // create RGBA intermediate when necessary
     if (mSourceSurface->getChannelOrder().getCode() != SurfaceChannelOrder::RGBA) {
         int32_t width = mSourceSurface->getWidth();
