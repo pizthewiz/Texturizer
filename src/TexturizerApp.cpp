@@ -241,6 +241,7 @@ void TexturizerApp::setup() {
         console() << "failed to create texture from DDS file" << endl;
         quit();
     }
+    mTexture->setTopDown();
 
     gl::enableAlphaBlending();
 }
