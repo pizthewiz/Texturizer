@@ -16,7 +16,8 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-#define DXT1 1
+//#define DXT1 1
+#define DXT5 1
 
 class TexturizerApp : public App {
 public:
@@ -38,7 +39,7 @@ void TexturizerApp::setup() {
     }
 
     try {
-        mSourceSurface = Surface::create(loadImage(loadAsset("uvtemplate.bmp")));
+        mSourceSurface = Surface::create(loadImage(loadAsset("uvtemplate.png")));
     } catch (...) {
         console() << "unable to create surface" << endl;
         quit();
@@ -78,7 +79,7 @@ void TexturizerApp::setup() {
 #if defined(DXT1)
     dataSize /= 8;
     int compressionFormat = 0;
-#else
+#elif defined(DXT5)
     dataSize /= 4;
     int compressionFormat = 1;
 #endif
@@ -238,6 +239,8 @@ void TexturizerApp::setup() {
         console() << "failed to create texture from DDS file" << endl;
         quit();
     }
+
+    gl::enableAlphaBlending();
 }
 
 void TexturizerApp::quit() {
