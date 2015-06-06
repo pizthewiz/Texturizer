@@ -226,14 +226,14 @@ void TexturizerApp::setup() {
 #endif
     header->ddsCaps.dwCaps1 = DDSCAPS_TEXTURE;
 
-    Buffer buffer(128 + dataSize);
-    memcpy((unsigned char*)buffer.getData() + 0, &"DDS ", 4);
-    memcpy((unsigned char*)buffer.getData() + 4, header, 124);
-    memcpy((unsigned char*)buffer.getData() + 128, destination, dataSize);
+    BufferRef buffer = Buffer::create(128 + dataSize);
+    memcpy((unsigned char*)buffer->getData() + 0, &"DDS ", 4);
+    memcpy((unsigned char*)buffer->getData() + 4, header, 124);
+    memcpy((unsigned char*)buffer->getData() + 128, destination, dataSize);
     free(destination);
 
     fs::path ddsFilePath = getAssetPath("") / "out.DDS";
-    buffer.write(DataTargetPath::createRef(ddsFilePath));
+    buffer->write(DataTargetPath::createRef(ddsFilePath));
 
     try {
         mTexture = gl::Texture::createFromDds(DataSourceBuffer::create(buffer));
